@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="本周国外电影推荐：综合 Rotten Tomatoes、Metacritic、Roger Ebert、IMDb 和 Letterboxd 等国外电影网站。">
+  <title>My Week Movies｜本周国外电影推荐</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #131b32;
+      --panel-2: #1a2542;
+      --line: #31405f;
+      --text: #f4f7ff;
+      --muted: #bac6df;
+      --accent: #7dd3fc;
+      --accent-2: #fbbf24;
+      --good: #86efac;
+      --warn: #fca5a5;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 10% 0%, #1c2e54 0, var(--bg) 40%);
+      color: var(--text);
+      font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+      line-height: 1.7;
+    }
+    a { color: var(--accent); }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+    .wrap { width: min(100% - 32px, var(--max)); margin: 0 auto; }
+    header { padding: 64px 0 36px; }
+    .eyebrow { color: var(--accent-2); font-size: .9rem; font-weight: 700; letter-spacing: .12em; }
+    h1 { margin: 8px 0 12px; font-size: clamp(2.3rem, 6vw, 4.7rem); line-height: 1.1; letter-spacing: -.04em; }
+    .lead { max-width: 780px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .badge { border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; color: var(--muted); background: rgba(19,27,50,.75); }
+    .hero-grid { display: grid; grid-template-columns: 1.4fr .8fr; gap: 18px; align-items: stretch; }
+    .panel { background: rgba(19,27,50,.9); border: 1px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: 0 16px 45px rgba(0,0,0,.18); }
+    .panel h2 { margin: 0 0 10px; font-size: 1.3rem; }
+    .signal { border-left: 4px solid var(--good); }
+    .signal strong { color: var(--good); }
+    .sources { border-left: 4px solid var(--accent); }
+    .sources ul { margin: 10px 0 0; padding-left: 20px; }
+    section { padding: 26px 0; }
+    .section-title { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 18px; }
+    h2 { font-size: 1.9rem; margin: 0; }
+    .section-note { margin: 0; color: var(--muted); font-size: .95rem; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+    .filter { cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; background: var(--panel); color: var(--text); font: inherit; }
+    .filter[aria-pressed="true"] { background: var(--accent); color: #07111e; border-color: var(--accent); font-weight: 700; }
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .card { display: flex; flex-direction: column; background: linear-gradient(145deg, rgba(26,37,66,.98), rgba(19,27,50,.98)); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .card-top { padding: 23px 23px 14px; }
+    .rank { color: var(--accent-2); font-weight: 800; font-size: .85rem; letter-spacing: .08em; }
+    .card h3 { margin: 5px 0 2px; font-size: 1.45rem; line-height: 1.3; }
+    .cn-title { color: var(--muted); font-size: 1rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 13px 0 0; }
+    .tag { background: rgba(125,211,252,.12); color: #c7efff; border-radius: 6px; padding: 3px 8px; font-size: .86rem; }
+    .score-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+    .score { min-width: 92px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(11,16,32,.35); }
+    .score b { display: block; color: var(--good); font-size: 1.15rem; }
+    .score span { color: var(--muted); font-size: .77rem; }
+    .card-body { padding: 0 23px 18px; color: #e5eaf7; }
+    .card-body p { margin: 10px 0; }
+    .en { color: #dce7ff; }
+    .zh { color: var(--muted); }
+    .label { color: var(--accent-2); font-size: .84rem; font-weight: 700; }
+    .card-footer { margin-top: auto; padding: 14px 23px 20px; border-top: 1px solid rgba(49,64,95,.7); color: var(--muted); font-size: .9rem; }
+    .card-footer a { display: inline-block; margin-right: 10px; }
+    .watchlist { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .watchlist .card h3 { font-size: 1.2rem; }
+    .method { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .method div { padding: 17px; border: 1px solid var(--line); border-radius: 14px; background: rgba(19,27,50,.7); }
+    .method b { display: block; color: var(--accent); margin-bottom: 4px; }
+    footer { padding: 30px 0 58px; color: var(--muted); font-size: .9rem; }
+    .small { color: var(--muted); font-size: .86rem; }
+    [hidden] { display: none !important; }
+    @media (max-width: 800px) {
+      .hero-grid, .cards, .watchlist, .method { grid-template-columns: 1fr; }
+      header { padding-top: 40px; }
+      .section-title { display: block; }
+      .section-note { margin-top: 6px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="eyebrow">MY WEEK MOVIES｜我的本周片单</div>
+    <h1>本周，去看一部好电影。</h1>
+    <p class="lead">综合国外电影数据库、影评网站和编辑部片单，筛出适合本周观看的高口碑作品。页面中的英文标题、英文简介或网站名称，均紧跟中文翻译。</p>
+    <div class="meta-row" aria-label="页面信息">
+      <span class="badge">更新：2026-09-19（北京时间）</span>
+      <span class="badge">来源：5 个国外电影平台</span>
+      <span class="badge">评分：动态数据，仅供选片</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="hero-grid">
+      <section class="panel signal" aria-labelledby="editor-pick">
+        <h2 id="editor-pick">编辑本周首选：Blue Heron（《蓝鹭》，工作译名）</h2>
+        <p><strong>为什么选它：</strong>它同时获得 Rotten Tomatoes（烂番茄）的高影评人分数和 Metacritic（元评论）的高分，主题集中在家庭、记忆与创伤，适合想看细腻剧情片的观众。</p>
+        <p class="small">注意：不同国家的上映、租赁和流媒体上线时间不同，请通过片名链接确认本地可观看渠道。</p>
+      </section>
+      <section class="panel sources" aria-labelledby="source-list">
+        <h2 id="source-list">本次检索的网站</h2>
+        <ul>
+          <li><a href="https://editorial.rottentomatoes.com/guide/best-new-movies/">Rotten Tomatoes</a>（烂番茄）</li>
+          <li><a href="https://www.metacritic.com/browse/movie/all/all/2026/metascore/">Metacritic</a>（元评论）</li>
+          <li><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">Roger Ebert</a>（罗杰·艾伯特影评网）</li>
+          <li><a href="https://www.imdb.com/chart/top/?sort=release_date%2Cdesc">IMDb</a>（互联网电影资料库）</li>
+          <li><a href="https://letterboxd.com/official/list/march-2026-report-top-25-films-of-the-year/detail/">Letterboxd</a>（电影社区）</li>
+        </ul>
+      </section>
+    </div>
+
+    <section aria-labelledby="recommendations">
+      <div class="section-title">
+        <h2 id="recommendations">本周推荐</h2>
+        <p class="section-note">先看高交叉口碑，再按类型选择。</p>
+      </div>
+      <div class="filters" role="group" aria-label="按类型筛选">
+        <button class="filter" data-filter="all" aria-pressed="true">全部</button>
+        <button class="filter" data-filter="drama" aria-pressed="false">剧情</button>
+        <button class="filter" data-filter="documentary" aria-pressed="false">纪录片</button>
+        <button class="filter" data-filter="thriller" aria-pressed="false">惊悚 / 犯罪</button>
+        <button class="filter" data-filter="adventure" aria-pressed="false">冒险 / 科幻</button>
+      </div>
+      <div class="cards" id="cards">
+        <article class="card" data-genre="drama">
+          <div class="card-top">
+            <div class="rank">01｜交叉口碑</div>
+            <h3>Blue Heron</h3>
+            <div class="cn-title">《蓝鹭》（工作译名）</div>
+            <div class="tags"><span class="tag">剧情 Drama（剧情）</span><span class="tag">加拿大 Canada（加拿大）</span><span class="tag">2025</span></div>
+            <div class="score-row">
+              <div class="score"><b>98%</b><span>RT Critics（烂番茄影评人）</span></div>
+              <div class="score"><b>92</b><span>Metascore（元评分）</span></div>
+              <div class="score"><b>67%</b><span>RT Audience（烂番茄观众）</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">A young girl tries to understand her troubled older brother as memory, imagination, and family history begin to overlap.</p>
+            <p class="zh">中文翻译：一个女孩努力理解问题重重的哥哥；随着记忆、想象与家庭历史交叠，童年经验逐渐显露出新的真相。</p>
+            <p><strong>推荐理由：</strong>情绪克制，结构有实验性，适合喜欢家庭心理 drama（剧情）和记忆叙事的观众。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/blue_heron_2025">电影资料｜Movie details（电影详情）</a><a href="https://www.metacritic.com/movie/blue-heron/">评分页｜Score page（评分页面）</a></div>
+        </article>
+
+        <article class="card" data-genre="drama">
+          <div class="card-top">
+            <div class="rank">02｜年度剧情</div>
+            <h3>All That's Left of You</h3>
+            <div class="cn-title">《你留下的一切》（工作译名）</div>
+            <div class="tags"><span class="tag">Drama（剧情）</span><span class="tag">Family（家庭）</span><span class="tag">2025</span></div>
+            <div class="score-row">
+              <div class="score"><b>100%</b><span>RT Critics（烂番茄影评人）</span></div>
+              <div class="score"><b>94%</b><span>RT Audience（烂番茄观众）</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">A Palestinian family carries love, loss, and resilience across several generations, from 1948 to the First Intifada.</p>
+            <p class="zh">中文翻译：一个巴勒斯坦家庭跨越数代人承受爱、失去与坚韧，从 1948 年一直走到第一次起义时期。</p>
+            <p><strong>推荐理由：</strong>史诗跨度大，但落点始终是家庭成员之间的情感；适合想看历史背景与人物命运交织的观众。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/all_thats_left_of_you">电影资料｜Movie details（电影详情）</a><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">影评来源｜Review source（影评来源）</a></div>
+        </article>
+
+        <article class="card" data-genre="drama">
+          <div class="card-top">
+            <div class="rank">03｜温柔黑色幽默</div>
+            <h3>A Poet</h3>
+            <div class="cn-title">《诗人》（工作译名）</div>
+            <div class="tags"><span class="tag">Dark comedy（黑色喜剧）</span><span class="tag">Colombia（哥伦比亚）</span><span class="tag">2025</span></div>
+            <div class="score-row">
+              <div class="score"><b>100%</b><span>RT Critics（烂番茄影评人）</span></div>
+              <div class="score"><b>92%</b><span>RT Audience（烂番茄观众）</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">A failed, middle-aged writer wanders through Medellín, turning the tortured-artist myth into a darkly funny portrait of stalled ambition.</p>
+            <p class="zh">中文翻译：一位失败的中年作家游荡在麦德林街头，把“痛苦艺术家”的神话变成一幅关于理想停滞的黑色幽默画像。</p>
+            <p><strong>推荐理由：</strong>不靠鸡汤解决人生困境，用尴尬和荒诞制造真实感；适合喜欢冷幽默与作者电影的观众。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/a_poet_2025">电影资料｜Movie details（电影详情）</a></div>
+        </article>
+
+        <article class="card" data-genre="drama">
+          <div class="card-top">
+            <div class="rank">04｜历史成长</div>
+            <h3>The President's Cake</h3>
+            <div class="cn-title">《总统的蛋糕》（工作译名）</div>
+            <div class="tags"><span class="tag">Drama（剧情）</span><span class="tag">Iraq（伊拉克）</span><span class="tag">2025</span></div>
+            <div class="score-row">
+              <div class="score"><b>99%</b><span>RT Critics（烂番茄影评人）</span></div>
+              <div class="score"><b>90%</b><span>RT Audience（烂番茄观众）</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">In 1990s Iraq, a nine-year-old girl is chosen to prepare a birthday cake for the president while her family struggles to survive.</p>
+            <p class="zh">中文翻译：在 20 世纪 90 年代的伊拉克，一个九岁女孩被选中为总统准备生日蛋糕，而她的家人正在努力求生。</p>
+            <p><strong>推荐理由：</strong>从孩子的视角切入宏大历史，细节小而有力；适合喜欢克制、写实、带社会观察的剧情片观众。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/the_presidents_cake">电影资料｜Movie details（电影详情）</a></div>
+        </article>
+
+        <article class="card" data-genre="documentary">
+          <div class="card-top">
+            <div class="rank">05｜纪录片首选</div>
+            <h3>American Doctor</h3>
+            <div class="cn-title">《美国医生》（工作译名）</div>
+            <div class="tags"><span class="tag">Documentary（纪录片）</span><span class="tag">Humanitarian（人道主题）</span><span class="tag">2026</span></div>
+            <div class="score-row">
+              <div class="score"><b>100%</b><span>RT Critics（烂番茄影评人）</span></div>
+              <div class="score"><b>86</b><span>Metascore（元评分）</span></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">Three physicians from different backgrounds work in Gaza, where medical care becomes inseparable from humanitarian responsibility.</p>
+            <p class="zh">中文翻译：三位背景不同的医生在加沙工作；在这里，医疗救治与人道责任无法分开。</p>
+            <p><strong>推荐理由：</strong>现实现场感强，适合想看医疗、人道主义和个人选择如何彼此牵动的纪录片观众。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/american_doctor">电影资料｜Movie details（电影详情）</a><a href="https://www.metacritic.com/movie/american-doctor/">评分页｜Score page（评分页面）</a></div>
+        </article>
+
+        <article class="card" data-genre="thriller">
+          <div class="card-top">
+            <div class="rank">06｜成人犯罪片</div>
+            <h3>Crime 101</h3>
+            <div class="cn-title">《犯罪现场 101》（工作译名）</div>
+            <div class="tags"><span class="tag">Crime thriller（犯罪惊悚）</span><span class="tag">Los Angeles（洛杉矶）</span><span class="tag">2026</span></div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">A methodical criminal and an old-school detective face off in a noir-flavored Los Angeles cat-and-mouse story.</p>
+            <p class="zh">中文翻译：一名做事缜密的罪犯与一名老派侦探在洛杉矶展开对决，形成带有黑色电影气质的猫鼠游戏。</p>
+            <p><strong>推荐理由：</strong>Roger Ebert（罗杰·艾伯特影评网）编辑部把它列入 2026 年上半年重点影片；适合想看节奏稳、角色驱动的犯罪片观众。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">影评来源｜Review source（影评来源）</a></div>
+        </article>
+
+        <article class="card" data-genre="adventure">
+          <div class="card-top">
+            <div class="rank">07｜大银幕冒险</div>
+            <h3>The Odyssey</h3>
+            <div class="cn-title">《奥德赛》</div>
+            <div class="tags"><span class="tag">Adventure（冒险）</span><span class="tag">Fantasy（奇幻）</span><span class="tag">2026</span></div>
+            <div class="score-row"><div class="score"><b>88</b><span>Metascore（元评分）</span></div></div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">After the Trojan War, Odysseus faces monsters, sirens, and impossible choices on his voyage home to Ithaca.</p>
+            <p class="zh">中文翻译：特洛伊战争结束后，奥德修斯在返乡途中面对怪物、海妖和一连串几乎无法选择的命运关卡。</p>
+            <p><strong>推荐理由：</strong>如果本周想换口味、看制作规模更大的冒险片，可优先考虑；观看方式和地区上线状态请以当地影院或平台为准。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.metacritic.com/movie/the-odyssey/">评分页｜Score page（评分页面）</a></div>
+        </article>
+
+        <article class="card" data-genre="thriller">
+          <div class="card-top">
+            <div class="rank">08｜奇异作者片</div>
+            <h3>By Design</h3>
+            <div class="cn-title">《由设计而生》（工作译名）</div>
+            <div class="tags"><span class="tag">Surreal comedy（超现实喜剧）</span><span class="tag">Identity（身份主题）</span><span class="tag">2026</span></div>
+          </div>
+          <div class="card-body">
+            <div class="label">English synopsis（英文简介）</div>
+            <p class="en">A woman suddenly switches consciousness with a wooden chair, opening a strange fable about identity, desire, and how people value one another.</p>
+            <p class="zh">中文翻译：一名女子突然与一把木椅交换意识，由此展开关于身份、欲望以及人与人如何彼此衡量的奇异寓言。</p>
+            <p><strong>推荐理由：</strong>设定大胆、形式感强；适合喜欢超现实、荒诞喜剧和不按常规讲故事的观众。</p>
+          </div>
+          <div class="card-footer"><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">影评来源｜Review source（影评来源）</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="watchlist">
+      <div class="section-title">
+        <h2 id="watchlist">本周收藏：高分但需留意档期</h2>
+        <p class="section-note">适合先加入片单，再确认本地上映或流媒体信息。</p>
+      </div>
+      <div class="cards watchlist">
+        <article class="card">
+          <div class="card-top"><div class="rank">WATCHLIST 01｜待上映</div><h3>La Gradiva</h3><div class="cn-title">《格拉迪瓦》（工作译名）</div><div class="tags"><span class="tag">Metascore（元评分）98</span><span class="tag">France（法国）</span></div></div>
+          <div class="card-body"><p class="en">French high-school students descend into a dizzying journey among the ruins of Pompeii.</p><p class="zh">中文翻译：法国高中生在庞贝遗址旅行时，逐步陷入一场眩晕般的欲望与愤怒之旅。</p></div>
+          <div class="card-footer">Metacritic（元评论）页面显示：2026-12-18 上映。</div>
+        </article>
+        <article class="card">
+          <div class="card-top"><div class="rank">WATCHLIST 02｜纪录片</div><h3>Remake</h3><div class="cn-title">《重制》（工作译名）</div><div class="tags"><span class="tag">Metascore（元评分）93</span><span class="tag">Documentary（纪录片）</span></div></div>
+          <div class="card-body"><p class="en">A filmmaker revisits decades of family footage and the loss of his son, asking what a camera can preserve.</p><p class="zh">中文翻译：一位导演重访数十年的家庭影像和失去儿子的经历，追问摄影机究竟能保存什么。</p></div>
+          <div class="card-footer">Metacritic（元评论）页面显示：2026-07-10 上映。</div>
+        </article>
+        <article class="card">
+          <div class="card-top"><div class="rank">WATCHLIST 03｜社会观察</div><h3>Once Upon a Time in Harlem</h3><div class="cn-title">《哈莱姆往事》（工作译名）</div><div class="tags"><span class="tag">Metascore（元评分）93</span><span class="tag">History（历史）</span></div></div>
+          <div class="card-body"><p class="en">A restored 1972 gathering of Harlem Renaissance figures becomes a conversation about art, memory, and cultural inheritance.</p><p class="zh">中文翻译：一场修复后的 1972 年哈莱姆文艺复兴人物聚会，变成关于艺术、记忆和文化传承的长谈。</p></div>
+          <div class="card-footer">Metacritic（元评论）页面显示：2026-10-16 上映。</div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="methodology">
+      <div class="section-title"><h2 id="methodology">怎么选出来的</h2><p class="section-note">不把单一网站评分当成绝对答案。</p></div>
+      <div class="method">
+        <div><b>交叉验证</b>至少结合两个国外来源的评分或推荐信号，优先保留同时有影评人与观众反馈的作品。</div>
+        <div><b>类型平衡</b>覆盖剧情、纪录片、犯罪惊悚、冒险和超现实喜剧，避免片单只剩一种口味。</div>
+        <div><b>动态提醒</b>评分、榜单名次、上映和流媒体状态会变化；链接用于查看最新页面。</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>数据抓取时间：2026-09-19 03:16（GMT+8）。片名中文为常见译法或工作译名，未注明“官方”的不代表正式发行译名。</p>
+    <p>版权说明：本页只做电影信息整理与推荐，评分及片名资料归各来源网站所有。© My Week Movies。</p>
+  </footer>
+
+  <script>
+    const filters = document.querySelectorAll('.filter');
+    const cards = document.querySelectorAll('#cards .card');
+    filters.forEach((button) => {
+      button.addEventListener('click', () => {
+        const filter = button.dataset.filter;
+        filters.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+        cards.forEach((card) => {
+          card.hidden = filter !== 'all' && card.dataset.genre !== filter;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
