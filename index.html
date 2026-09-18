@@ -1,338 +1,209 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="本周国外电影推荐：综合 Rotten Tomatoes、Metacritic、Roger Ebert、IMDb 和 Letterboxd 等国外电影网站。">
-  <title>My Week Movies｜本周国外电影推荐</title>
-  <style>
-    :root {
-      --bg: #0b1020;
-      --panel: #131b32;
-      --panel-2: #1a2542;
-      --line: #31405f;
-      --text: #f4f7ff;
-      --muted: #bac6df;
-      --accent: #7dd3fc;
-      --accent-2: #fbbf24;
-      --good: #86efac;
-      --warn: #fca5a5;
-      --max: 1180px;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: radial-gradient(circle at 10% 0%, #1c2e54 0, var(--bg) 40%);
-      color: var(--text);
-      font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
-      line-height: 1.7;
-    }
-    a { color: var(--accent); }
-    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
-    .wrap { width: min(100% - 32px, var(--max)); margin: 0 auto; }
-    header { padding: 64px 0 36px; }
-    .eyebrow { color: var(--accent-2); font-size: .9rem; font-weight: 700; letter-spacing: .12em; }
-    h1 { margin: 8px 0 12px; font-size: clamp(2.3rem, 6vw, 4.7rem); line-height: 1.1; letter-spacing: -.04em; }
-    .lead { max-width: 780px; margin: 0; color: var(--muted); font-size: 1.12rem; }
-    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-    .badge { border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; color: var(--muted); background: rgba(19,27,50,.75); }
-    .hero-grid { display: grid; grid-template-columns: 1.4fr .8fr; gap: 18px; align-items: stretch; }
-    .panel { background: rgba(19,27,50,.9); border: 1px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: 0 16px 45px rgba(0,0,0,.18); }
-    .panel h2 { margin: 0 0 10px; font-size: 1.3rem; }
-    .signal { border-left: 4px solid var(--good); }
-    .signal strong { color: var(--good); }
-    .sources { border-left: 4px solid var(--accent); }
-    .sources ul { margin: 10px 0 0; padding-left: 20px; }
-    section { padding: 26px 0; }
-    .section-title { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 18px; }
-    h2 { font-size: 1.9rem; margin: 0; }
-    .section-note { margin: 0; color: var(--muted); font-size: .95rem; }
-    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
-    .filter { cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; background: var(--panel); color: var(--text); font: inherit; }
-    .filter[aria-pressed="true"] { background: var(--accent); color: #07111e; border-color: var(--accent); font-weight: 700; }
-    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .card { display: flex; flex-direction: column; background: linear-gradient(145deg, rgba(26,37,66,.98), rgba(19,27,50,.98)); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
-    .card-top { padding: 23px 23px 14px; }
-    .rank { color: var(--accent-2); font-weight: 800; font-size: .85rem; letter-spacing: .08em; }
-    .card h3 { margin: 5px 0 2px; font-size: 1.45rem; line-height: 1.3; }
-    .cn-title { color: var(--muted); font-size: 1rem; }
-    .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 13px 0 0; }
-    .tag { background: rgba(125,211,252,.12); color: #c7efff; border-radius: 6px; padding: 3px 8px; font-size: .86rem; }
-    .score-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
-    .score { min-width: 92px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(11,16,32,.35); }
-    .score b { display: block; color: var(--good); font-size: 1.15rem; }
-    .score span { color: var(--muted); font-size: .77rem; }
-    .card-body { padding: 0 23px 18px; color: #e5eaf7; }
-    .card-body p { margin: 10px 0; }
-    .en { color: #dce7ff; }
-    .zh { color: var(--muted); }
-    .label { color: var(--accent-2); font-size: .84rem; font-weight: 700; }
-    .card-footer { margin-top: auto; padding: 14px 23px 20px; border-top: 1px solid rgba(49,64,95,.7); color: var(--muted); font-size: .9rem; }
-    .card-footer a { display: inline-block; margin-right: 10px; }
-    .watchlist { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .watchlist .card h3 { font-size: 1.2rem; }
-    .method { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .method div { padding: 17px; border: 1px solid var(--line); border-radius: 14px; background: rgba(19,27,50,.7); }
-    .method b { display: block; color: var(--accent); margin-bottom: 4px; }
-    footer { padding: 30px 0 58px; color: var(--muted); font-size: .9rem; }
-    .small { color: var(--muted); font-size: .86rem; }
-    [hidden] { display: none !important; }
-    @media (max-width: 800px) {
-      .hero-grid, .cards, .watchlist, .method { grid-template-columns: 1fr; }
-      header { padding-top: 40px; }
-      .section-title { display: block; }
-      .section-note { margin-top: 6px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本周电影推荐 · My Week Movies</title>
+<style>
+  :root {
+    --bg: #0e0f12;
+    --panel: #161922;
+    --panel-2: #1d2130;
+    --text: #e8eaef;
+    --muted: #9aa3b2;
+    --accent: #ffb454;
+    --accent-2: #6ec1ff;
+    --border: #2a2f3d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; line-height: 1.7; }
+  header { padding: 48px 24px 24px; text-align: center; border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0; font-size: 36px; letter-spacing: 1px; color: var(--accent); }
+  header .subtitle { color: var(--muted); margin-top: 8px; font-size: 16px; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px; }
+  .intro { color: var(--muted); margin-bottom: 32px; font-size: 15px; }
+  .movie {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .movie h2 { margin: 0 0 4px; font-size: 24px; color: var(--accent-2); }
+  .movie .meta { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+  .movie .meta span { margin-right: 16px; }
+  .lang-block { background: var(--panel-2); border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+  .lang-block.zh { border-left-color: var(--accent-2); }
+  .lang-block .label { font-weight: 700; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .lang-block p { margin: 0; font-size: 15px; }
+  .why { margin-top: 14px; color: var(--muted); font-size: 14px; }
+  footer { text-align: center; padding: 32px 16px 48px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 24px; }
+  a { color: var(--accent-2); }
+  nav.toc { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px 24px; margin-bottom: 32px; }
+  nav.toc h2 { margin: 0 0 10px; font-size: 16px; color: var(--muted); }
+  nav.toc ol { margin: 0; padding-left: 22px; }
+  nav.toc li { margin: 4px 0; }
+  nav.toc a { color: var(--accent-2); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    header h1 { font-size: 26px; }
+    .movie { padding: 18px; }
+    .movie h2 { font-size: 20px; }
+  }
+</style>
 </head>
 <body>
-  <header class="wrap">
-    <div class="eyebrow">MY WEEK MOVIES｜我的本周片单</div>
-    <h1>本周，去看一部好电影。</h1>
-    <p class="lead">综合国外电影数据库、影评网站和编辑部片单，筛出适合本周观看的高口碑作品。页面中的英文标题、英文简介或网站名称，均紧跟中文翻译。</p>
-    <div class="meta-row" aria-label="页面信息">
-      <span class="badge">更新：2026-09-19（北京时间）</span>
-      <span class="badge">来源：5 个国外电影平台</span>
-      <span class="badge">评分：动态数据，仅供选片</span>
+<header>
+  <h1>My Week Movies · 本周电影推荐</h1>
+  <div class="subtitle">Six classics to revisit — six 部值得重温的经典</div>
+</header>
+
+<main>
+  <p class="intro">本清单整理自国际影评榜单（Wikipedia "List of films voted the best"，综合 Sight &amp; Sound 1962–2022 多届十年大评选）。每部电影给出英文简介并附中文翻译。本清单由 WorkBuddy 自动化整理于 2026-09-19。</p>
+
+  <nav class="toc" aria-label="目录">
+    <h2>目录 · Contents</h2>
+    <ol>
+      <li><a href="#kane">Citizen Kane (1941)</a></li>
+      <li><a href="#godfather">The Godfather (1972)</a></li>
+      <li><a href="#tokyo">Tokyo Story (1953)</a></li>
+      <li><a href="#vertigo">Vertigo (1958)</a></li>
+      <li><a href="#space">2001: A Space Odyssey (1968)</a></li>
+      <li><a href="#jeanne">Jeanne Dielman, 23, quai du Commerce, 1080 Bruxelles (1975)</a></li>
+    </ol>
+  </nav>
+
+  <article class="movie" id="kane" aria-labelledby="kane-title">
+    <h2 id="kane-title">1. Citizen Kane · 《公民凯恩》</h2>
+    <div class="meta">
+      <span>导演：Orson Welles（奥逊·威尔斯）</span>
+      <span>年份：1941</span>
+      <span>国家：USA</span>
+      <span>片长：119 分钟</span>
     </div>
-  </header>
 
-  <main class="wrap">
-    <div class="hero-grid">
-      <section class="panel signal" aria-labelledby="editor-pick">
-        <h2 id="editor-pick">编辑本周首选：Blue Heron（《蓝鹭》，工作译名）</h2>
-        <p><strong>为什么选它：</strong>它同时获得 Rotten Tomatoes（烂番茄）的高影评人分数和 Metacritic（元评论）的高分，主题集中在家庭、记忆与创伤，适合想看细腻剧情片的观众。</p>
-        <p class="small">注意：不同国家的上映、租赁和流媒体上线时间不同，请通过片名链接确认本地可观看渠道。</p>
-      </section>
-      <section class="panel sources" aria-labelledby="source-list">
-        <h2 id="source-list">本次检索的网站</h2>
-        <ul>
-          <li><a href="https://editorial.rottentomatoes.com/guide/best-new-movies/">Rotten Tomatoes</a>（烂番茄）</li>
-          <li><a href="https://www.metacritic.com/browse/movie/all/all/2026/metascore/">Metacritic</a>（元评论）</li>
-          <li><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">Roger Ebert</a>（罗杰·艾伯特影评网）</li>
-          <li><a href="https://www.imdb.com/chart/top/?sort=release_date%2Cdesc">IMDb</a>（互联网电影资料库）</li>
-          <li><a href="https://letterboxd.com/official/list/march-2026-report-top-25-films-of-the-year/detail/">Letterboxd</a>（电影社区）</li>
-        </ul>
-      </section>
+    <div class="lang-block">
+      <div class="label">English Summary</div>
+      <p>Often called the greatest film ever made, Citizen Kane follows the rise and fall of Charles Foster Kane, a fictional newspaper magnate modeled on William Randolph Hearst. Told through flashbacks and the investigations of a reporter trying to uncover the meaning of Kane's dying word, "Rosebud," the film broke cinematic ground with its deep-focus cinematography, low-angle shots, non-linear narrative, and overlapping dialogue. It topped the British Film Institute's Sight &amp; Sound critics' poll for five consecutive decades (1962–2002).</p>
+    </div>
+    <div class="lang-block zh">
+      <div class="label">中文翻译</div>
+      <p>《公民凯恩》常被誉为史上最伟大的电影。影片讲述了虚构报业大亨查尔斯·福斯特·凯恩（原型为威廉·伦道夫·赫斯特）的兴衰史。通过倒叙与一名记者追查凯恩临终遗言"玫瑰花蕾"的真相展开。影片以深焦摄影、低角度镜头、非线性叙事与重叠对白开创了电影语言的新纪元，并在 1962 至 2002 年间连续五届蝉联英国电影学会《视与听》影评人十年大评选的第一名。</p>
     </div>
 
-    <section aria-labelledby="recommendations">
-      <div class="section-title">
-        <h2 id="recommendations">本周推荐</h2>
-        <p class="section-note">先看高交叉口碑，再按类型选择。</p>
-      </div>
-      <div class="filters" role="group" aria-label="按类型筛选">
-        <button class="filter" data-filter="all" aria-pressed="true">全部</button>
-        <button class="filter" data-filter="drama" aria-pressed="false">剧情</button>
-        <button class="filter" data-filter="documentary" aria-pressed="false">纪录片</button>
-        <button class="filter" data-filter="thriller" aria-pressed="false">惊悚 / 犯罪</button>
-        <button class="filter" data-filter="adventure" aria-pressed="false">冒险 / 科幻</button>
-      </div>
-      <div class="cards" id="cards">
-        <article class="card" data-genre="drama">
-          <div class="card-top">
-            <div class="rank">01｜交叉口碑</div>
-            <h3>Blue Heron</h3>
-            <div class="cn-title">《蓝鹭》（工作译名）</div>
-            <div class="tags"><span class="tag">剧情 Drama（剧情）</span><span class="tag">加拿大 Canada（加拿大）</span><span class="tag">2025</span></div>
-            <div class="score-row">
-              <div class="score"><b>98%</b><span>RT Critics（烂番茄影评人）</span></div>
-              <div class="score"><b>92</b><span>Metascore（元评分）</span></div>
-              <div class="score"><b>67%</b><span>RT Audience（烂番茄观众）</span></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">A young girl tries to understand her troubled older brother as memory, imagination, and family history begin to overlap.</p>
-            <p class="zh">中文翻译：一个女孩努力理解问题重重的哥哥；随着记忆、想象与家庭历史交叠，童年经验逐渐显露出新的真相。</p>
-            <p><strong>推荐理由：</strong>情绪克制，结构有实验性，适合喜欢家庭心理 drama（剧情）和记忆叙事的观众。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/blue_heron_2025">电影资料｜Movie details（电影详情）</a><a href="https://www.metacritic.com/movie/blue-heron/">评分页｜Score page（评分页面）</a></div>
-        </article>
+    <div class="why">推荐理由：电影叙事与摄影手法的"开山鼻祖"，每一位影迷都该至少看一次。</div>
+  </article>
 
-        <article class="card" data-genre="drama">
-          <div class="card-top">
-            <div class="rank">02｜年度剧情</div>
-            <h3>All That's Left of You</h3>
-            <div class="cn-title">《你留下的一切》（工作译名）</div>
-            <div class="tags"><span class="tag">Drama（剧情）</span><span class="tag">Family（家庭）</span><span class="tag">2025</span></div>
-            <div class="score-row">
-              <div class="score"><b>100%</b><span>RT Critics（烂番茄影评人）</span></div>
-              <div class="score"><b>94%</b><span>RT Audience（烂番茄观众）</span></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">A Palestinian family carries love, loss, and resilience across several generations, from 1948 to the First Intifada.</p>
-            <p class="zh">中文翻译：一个巴勒斯坦家庭跨越数代人承受爱、失去与坚韧，从 1948 年一直走到第一次起义时期。</p>
-            <p><strong>推荐理由：</strong>史诗跨度大，但落点始终是家庭成员之间的情感；适合想看历史背景与人物命运交织的观众。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/all_thats_left_of_you">电影资料｜Movie details（电影详情）</a><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">影评来源｜Review source（影评来源）</a></div>
-        </article>
+  <article class="movie" id="godfather" aria-labelledby="godfather-title">
+    <h2 id="godfather-title">2. The Godfather · 《教父》</h2>
+    <div class="meta">
+      <span>导演：Francis Ford Coppola（弗朗西斯·福特·科波拉）</span>
+      <span>年份：1972</span>
+      <span>国家：USA</span>
+      <span>片长：175 分钟</span>
+    </div>
 
-        <article class="card" data-genre="drama">
-          <div class="card-top">
-            <div class="rank">03｜温柔黑色幽默</div>
-            <h3>A Poet</h3>
-            <div class="cn-title">《诗人》（工作译名）</div>
-            <div class="tags"><span class="tag">Dark comedy（黑色喜剧）</span><span class="tag">Colombia（哥伦比亚）</span><span class="tag">2025</span></div>
-            <div class="score-row">
-              <div class="score"><b>100%</b><span>RT Critics（烂番茄影评人）</span></div>
-              <div class="score"><b>92%</b><span>RT Audience（烂番茄观众）</span></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">A failed, middle-aged writer wanders through Medellín, turning the tortured-artist myth into a darkly funny portrait of stalled ambition.</p>
-            <p class="zh">中文翻译：一位失败的中年作家游荡在麦德林街头，把“痛苦艺术家”的神话变成一幅关于理想停滞的黑色幽默画像。</p>
-            <p><strong>推荐理由：</strong>不靠鸡汤解决人生困境，用尴尬和荒诞制造真实感；适合喜欢冷幽默与作者电影的观众。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/a_poet_2025">电影资料｜Movie details（电影详情）</a></div>
-        </article>
+    <div class="lang-block">
+      <div class="label">English Summary</div>
+      <p>The Godfather chronicles the Corleone mafia family under patriarch Vito Corleone and the gradual transformation of his youngest son, Michael, from a reluctant outsider into a ruthless boss. Adapted from Mario Puzo's bestselling novel, the film is praised for Marlon Brando and Al Pacino's performances, Gordon Willis's shadowy cinematography, Nino Rota's score, and its portrayal of family, loyalty, and power. It won the Academy Award for Best Picture in 1972 and is regularly named the greatest American film by the American Film Institute.</p>
+    </div>
+    <div class="lang-block zh">
+      <div class="label">中文翻译</div>
+      <p>《教父》讲述了科里昂黑手党家族在教父维托·科里昂的领导下，以及他最年轻的儿子迈克尔从一名不愿介入家族事务的外人，逐步蜕变为冷血大佬的故事。影片改编自马里奥·普佐的畅销小说。马龙·白兰度与阿尔·帕西诺的表演、戈登·威利斯的暗调摄影、尼诺·罗塔的配乐以及对家族、忠诚与权力的刻画都备受赞誉。本片斩获 1972 年奥斯卡最佳影片，并常年位列美国电影学会评出的"美国最伟大电影"榜首。</p>
+    </div>
 
-        <article class="card" data-genre="drama">
-          <div class="card-top">
-            <div class="rank">04｜历史成长</div>
-            <h3>The President's Cake</h3>
-            <div class="cn-title">《总统的蛋糕》（工作译名）</div>
-            <div class="tags"><span class="tag">Drama（剧情）</span><span class="tag">Iraq（伊拉克）</span><span class="tag">2025</span></div>
-            <div class="score-row">
-              <div class="score"><b>99%</b><span>RT Critics（烂番茄影评人）</span></div>
-              <div class="score"><b>90%</b><span>RT Audience（烂番茄观众）</span></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">In 1990s Iraq, a nine-year-old girl is chosen to prepare a birthday cake for the president while her family struggles to survive.</p>
-            <p class="zh">中文翻译：在 20 世纪 90 年代的伊拉克，一个九岁女孩被选中为总统准备生日蛋糕，而她的家人正在努力求生。</p>
-            <p><strong>推荐理由：</strong>从孩子的视角切入宏大历史，细节小而有力；适合喜欢克制、写实、带社会观察的剧情片观众。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/the_presidents_cake">电影资料｜Movie details（电影详情）</a></div>
-        </article>
+    <div class="why">推荐理由：黑帮电影的巅峰，也是关于家族与人性最深沉的史诗。</div>
+  </article>
 
-        <article class="card" data-genre="documentary">
-          <div class="card-top">
-            <div class="rank">05｜纪录片首选</div>
-            <h3>American Doctor</h3>
-            <div class="cn-title">《美国医生》（工作译名）</div>
-            <div class="tags"><span class="tag">Documentary（纪录片）</span><span class="tag">Humanitarian（人道主题）</span><span class="tag">2026</span></div>
-            <div class="score-row">
-              <div class="score"><b>100%</b><span>RT Critics（烂番茄影评人）</span></div>
-              <div class="score"><b>86</b><span>Metascore（元评分）</span></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">Three physicians from different backgrounds work in Gaza, where medical care becomes inseparable from humanitarian responsibility.</p>
-            <p class="zh">中文翻译：三位背景不同的医生在加沙工作；在这里，医疗救治与人道责任无法分开。</p>
-            <p><strong>推荐理由：</strong>现实现场感强，适合想看医疗、人道主义和个人选择如何彼此牵动的纪录片观众。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.rottentomatoes.com/m/american_doctor">电影资料｜Movie details（电影详情）</a><a href="https://www.metacritic.com/movie/american-doctor/">评分页｜Score page（评分页面）</a></div>
-        </article>
+  <article class="movie" id="tokyo" aria-labelledby="tokyo-title">
+    <h2 id="tokyo-title">3. Tokyo Story · 《东京物语》</h2>
+    <div class="meta">
+      <span>导演：Yasujirō Ozu（小津安二郎）</span>
+      <span>年份：1953</span>
+      <span>国家：Japan</span>
+      <span>片长：136 分钟</span>
+    </div>
 
-        <article class="card" data-genre="thriller">
-          <div class="card-top">
-            <div class="rank">06｜成人犯罪片</div>
-            <h3>Crime 101</h3>
-            <div class="cn-title">《犯罪现场 101》（工作译名）</div>
-            <div class="tags"><span class="tag">Crime thriller（犯罪惊悚）</span><span class="tag">Los Angeles（洛杉矶）</span><span class="tag">2026</span></div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">A methodical criminal and an old-school detective face off in a noir-flavored Los Angeles cat-and-mouse story.</p>
-            <p class="zh">中文翻译：一名做事缜密的罪犯与一名老派侦探在洛杉矶展开对决，形成带有黑色电影气质的猫鼠游戏。</p>
-            <p><strong>推荐理由：</strong>Roger Ebert（罗杰·艾伯特影评网）编辑部把它列入 2026 年上半年重点影片；适合想看节奏稳、角色驱动的犯罪片观众。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">影评来源｜Review source（影评来源）</a></div>
-        </article>
+    <div class="lang-block">
+      <div class="label">English Summary</div>
+      <p>An aging couple travel from their small hometown of Onomichi to Tokyo to visit their grown children, only to find that their sons and daughters are too busy to spend time with them. Their widowed daughter-in-law Noriko is the only one who truly makes them feel welcome. Ozu's restrained, contemplative style — low camera placed at tatami-mat height, sparse cuts, and ellipses — turns an ordinary family visit into a meditation on generational change, postwar Japan's Westernization, and the inevitable distance between parents and children. It was voted the greatest film of all time in the 2012 Sight &amp; Sound directors' poll.</p>
+    </div>
+    <div class="lang-block zh">
+      <div class="label">中文翻译</div>
+      <p>一对老夫妇从广岛县的小镇尾道前往东京探望已成年的儿女，却发现子女们各自忙碌无暇陪伴，唯有丧夫的儿媳妇纪子对他们悉心照料。小津安二郎克制、内敛的影像风格——低机位（模拟榻榻米视角）、稀疏的剪辑与留白——把一次普通的探亲之旅升华为对代际变迁、日本战后西化以及亲子间渐行渐远的沉思。该片在 2012 年《视与听》导演评选中被评为影史第一。</p>
+    </div>
 
-        <article class="card" data-genre="adventure">
-          <div class="card-top">
-            <div class="rank">07｜大银幕冒险</div>
-            <h3>The Odyssey</h3>
-            <div class="cn-title">《奥德赛》</div>
-            <div class="tags"><span class="tag">Adventure（冒险）</span><span class="tag">Fantasy（奇幻）</span><span class="tag">2026</span></div>
-            <div class="score-row"><div class="score"><b>88</b><span>Metascore（元评分）</span></div></div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">After the Trojan War, Odysseus faces monsters, sirens, and impossible choices on his voyage home to Ithaca.</p>
-            <p class="zh">中文翻译：特洛伊战争结束后，奥德修斯在返乡途中面对怪物、海妖和一连串几乎无法选择的命运关卡。</p>
-            <p><strong>推荐理由：</strong>如果本周想换口味、看制作规模更大的冒险片，可优先考虑；观看方式和地区上线状态请以当地影院或平台为准。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.metacritic.com/movie/the-odyssey/">评分页｜Score page（评分页面）</a></div>
-        </article>
+    <div class="why">推荐理由：东方式含蓄美学的极致，看完后会让你想给家里打个电话。</div>
+  </article>
 
-        <article class="card" data-genre="thriller">
-          <div class="card-top">
-            <div class="rank">08｜奇异作者片</div>
-            <h3>By Design</h3>
-            <div class="cn-title">《由设计而生》（工作译名）</div>
-            <div class="tags"><span class="tag">Surreal comedy（超现实喜剧）</span><span class="tag">Identity（身份主题）</span><span class="tag">2026</span></div>
-          </div>
-          <div class="card-body">
-            <div class="label">English synopsis（英文简介）</div>
-            <p class="en">A woman suddenly switches consciousness with a wooden chair, opening a strange fable about identity, desire, and how people value one another.</p>
-            <p class="zh">中文翻译：一名女子突然与一把木椅交换意识，由此展开关于身份、欲望以及人与人如何彼此衡量的奇异寓言。</p>
-            <p><strong>推荐理由：</strong>设定大胆、形式感强；适合喜欢超现实、荒诞喜剧和不按常规讲故事的观众。</p>
-          </div>
-          <div class="card-footer"><a href="https://www.rogerebert.com/features/the-20-best-films-of-2026-so-far">影评来源｜Review source（影评来源）</a></div>
-        </article>
-      </div>
-    </section>
+  <article class="movie" id="vertigo" aria-labelledby="vertigo-title">
+    <h2 id="vertigo-title">4. Vertigo · 《迷魂记》</h2>
+    <div class="meta">
+      <span>导演：Alfred Hitchcock（阿尔弗雷德·希区柯克）</span>
+      <span>年份：1958</span>
+      <span>国家：USA</span>
+      <span>片长：128 分钟</span>
+    </div>
 
-    <section aria-labelledby="watchlist">
-      <div class="section-title">
-        <h2 id="watchlist">本周收藏：高分但需留意档期</h2>
-        <p class="section-note">适合先加入片单，再确认本地上映或流媒体信息。</p>
-      </div>
-      <div class="cards watchlist">
-        <article class="card">
-          <div class="card-top"><div class="rank">WATCHLIST 01｜待上映</div><h3>La Gradiva</h3><div class="cn-title">《格拉迪瓦》（工作译名）</div><div class="tags"><span class="tag">Metascore（元评分）98</span><span class="tag">France（法国）</span></div></div>
-          <div class="card-body"><p class="en">French high-school students descend into a dizzying journey among the ruins of Pompeii.</p><p class="zh">中文翻译：法国高中生在庞贝遗址旅行时，逐步陷入一场眩晕般的欲望与愤怒之旅。</p></div>
-          <div class="card-footer">Metacritic（元评论）页面显示：2026-12-18 上映。</div>
-        </article>
-        <article class="card">
-          <div class="card-top"><div class="rank">WATCHLIST 02｜纪录片</div><h3>Remake</h3><div class="cn-title">《重制》（工作译名）</div><div class="tags"><span class="tag">Metascore（元评分）93</span><span class="tag">Documentary（纪录片）</span></div></div>
-          <div class="card-body"><p class="en">A filmmaker revisits decades of family footage and the loss of his son, asking what a camera can preserve.</p><p class="zh">中文翻译：一位导演重访数十年的家庭影像和失去儿子的经历，追问摄影机究竟能保存什么。</p></div>
-          <div class="card-footer">Metacritic（元评论）页面显示：2026-07-10 上映。</div>
-        </article>
-        <article class="card">
-          <div class="card-top"><div class="rank">WATCHLIST 03｜社会观察</div><h3>Once Upon a Time in Harlem</h3><div class="cn-title">《哈莱姆往事》（工作译名）</div><div class="tags"><span class="tag">Metascore（元评分）93</span><span class="tag">History（历史）</span></div></div>
-          <div class="card-body"><p class="en">A restored 1972 gathering of Harlem Renaissance figures becomes a conversation about art, memory, and cultural inheritance.</p><p class="zh">中文翻译：一场修复后的 1972 年哈莱姆文艺复兴人物聚会，变成关于艺术、记忆和文化传承的长谈。</p></div>
-          <div class="card-footer">Metacritic（元评论）页面显示：2026-10-16 上映。</div>
-        </article>
-      </div>
-    </section>
+    <div class="lang-block">
+      <div class="label">English Summary</div>
+      <p>Retired San Francisco detective John "Scottie" Ferguson, suffering from acrophobia after a rooftop incident, is hired to follow the wife of an old acquaintance. What begins as a surveillance job becomes an obsessive, doomed romance that plays on themes of memory, desire, and control. Hitchcock pioneered the famous "dolly zoom" (now called the Vertigo effect) to convey Scottie's disorientation on heights. Initially a commercial disappointment, the film was re-evaluated and eventually crowned the greatest film ever made in the 2012 Sight &amp; Sound critics' poll.</p>
+    </div>
+    <div class="lang-block zh">
+      <div class="label">中文翻译</div>
+      <p>退休的旧金山警探约翰·"斯科蒂"·弗格森在一次屋顶追捕后患上了恐高症，受雇跟踪一位旧识的妻子。原本只是一桩监视任务，却演变成一段执念深重、无可挽回的恋情，触及记忆、欲望与掌控的主题。希区柯克首创了著名的"滑动变焦"（如今被称为"迷魂记效果"）以表现斯科蒂的眩晕。影片上映之初票房失利，但被重新评价后最终于 2012 年《视与听》影评人评选中登顶影史第一。</p>
+    </div>
 
-    <section aria-labelledby="methodology">
-      <div class="section-title"><h2 id="methodology">怎么选出来的</h2><p class="section-note">不把单一网站评分当成绝对答案。</p></div>
-      <div class="method">
-        <div><b>交叉验证</b>至少结合两个国外来源的评分或推荐信号，优先保留同时有影评人与观众反馈的作品。</div>
-        <div><b>类型平衡</b>覆盖剧情、纪录片、犯罪惊悚、冒险和超现实喜剧，避免片单只剩一种口味。</div>
-        <div><b>动态提醒</b>评分、榜单名次、上映和流媒体状态会变化；链接用于查看最新页面。</div>
-      </div>
-    </section>
-  </main>
+    <div class="why">推荐理由：希区柯克最私人化的杰作，关于"为什么我们会爱上不该爱的人"。</div>
+  </article>
 
-  <footer class="wrap">
-    <p>数据抓取时间：2026-09-19 03:16（GMT+8）。片名中文为常见译法或工作译名，未注明“官方”的不代表正式发行译名。</p>
-    <p>版权说明：本页只做电影信息整理与推荐，评分及片名资料归各来源网站所有。© My Week Movies。</p>
-  </footer>
+  <article class="movie" id="space" aria-labelledby="space-title">
+    <h2 id="space-title">5. 2001: A Space Odyssey · 《2001 太空漫游》</h2>
+    <div class="meta">
+      <span>导演：Stanley Kubrick（斯坦利·库布里克）</span>
+      <span>年份：1968</span>
+      <span>国家：UK / USA</span>
+      <span>片长：139 分钟</span>
+    </div>
 
-  <script>
-    const filters = document.querySelectorAll('.filter');
-    const cards = document.querySelectorAll('#cards .card');
-    filters.forEach((button) => {
-      button.addEventListener('click', () => {
-        const filter = button.dataset.filter;
-        filters.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-        cards.forEach((card) => {
-          card.hidden = filter !== 'all' && card.dataset.genre !== filter;
-        });
-      });
-    });
-  </script>
+    <div class="lang-block">
+      <div class="label">English Summary</div>
+      <p>Kubrick's epic traces humanity's evolution from a prehistoric tribe that encounters a mysterious monolith to a future space voyage to Jupiter, where astronaut Dave Bowman confronts another — and is transformed into a "Star Child." With dialogue kept to a minimum and long stretches accompanied only by classical music (Strauss, Ligeti, Khachaturian), the film explores human evolution, artificial intelligence (the calmly menacing HAL 9000), and the possibility of extraterrestrial intelligence. It topped the 2022 Sight &amp; Sound directors' poll.</p>
+    </div>
+    <div class="lang-block zh">
+      <div class="label">中文翻译</div>
+      <p>库布里克的史诗巨作追溯了人类从一支遭遇神秘黑石碑的原始部落，到未来飞向木星的太空旅程——宇航员戴夫·鲍曼在那里遭遇了第三块黑石碑，并被转化为"星孩"。影片对白极少，长段落仅以古典音乐（施特劳斯、利盖蒂、哈恰图良）相伴，探讨人类进化、人工智能（冷静而危险的 HAL 9000）以及地外文明的可能性。该片登顶 2022 年《视与听》导演评选第一名。</p>
+    </div>
+
+    <div class="why">推荐理由：科幻片的源头，也是关于人类文明最冷静也最震撼的寓言。</div>
+  </article>
+
+  <article class="movie" id="jeanne" aria-labelledby="jeanne-title">
+    <h2 id="jeanne-title">6. Jeanne Dielman, 23, quai du Commerce, 1080 Bruxelles · 《让娜·迪尔曼》</h2>
+    <div class="meta">
+      <span>导演：Chantal Akerman（香特尔·阿克曼）</span>
+      <span>年份：1975</span>
+      <span>国家：Belgium / France</span>
+      <span>片长：201 分钟</span>
+    </div>
+
+    <div class="lang-block">
+      <div class="label">English Summary</div>
+      <p>Over three days, Chantal Akerman's groundbreaking film observes the meticulously ordered routine of Jeanne Dielman, a widowed Brussels housewife who supports herself by receiving gentlemen in the afternoon. Shot in long takes with a static camera and no close-ups, the film turns cooking, cleaning, and small domestic rituals into the substance of cinema. Small disruptions in Jeanne's routine — overcooked potatoes, a dropped brush — slowly accumulate into an act of devastating violence. In 2022, it became the first film directed by a woman to top the Sight &amp; Sound critics' poll.</p>
+    </div>
+    <div class="lang-block zh">
+      <div class="label">中文翻译</div>
+      <p>香特尔·阿克曼的这部开创性作品用三天时间，观察布鲁塞尔寡妇让娜·迪尔曼按部就班的日常生活——她靠下午接待男客维持生计。影片以长镜头、静止机位、无特写拍摄，把做饭、打扫和琐碎的家居仪式本身变成了电影语言。日常生活里细微的裂痕——煮过头的土豆、掉落的刷子——一点点累积，最终爆发为一次毁灭性的暴力。在 2022 年，让娜·迪尔曼成为《视与听》影评人评选史上首部由女性导演夺得第一名的电影。</p>
+    </div>
+
+    <div class="why">推荐理由：慢电影与女性主义电影的里程碑，需要耐心，但回报巨大。</div>
+  </article>
+
+</main>
+
+<footer>
+  <p>来源 / Sources: Wikipedia "List of films voted the best"; Sight &amp; Sound Greatest Films of All Time polls (1962–2022).</p>
+  <p>整理 / Curated by WorkBuddy · 2026-09-19</p>
+</footer>
 </body>
 </html>
