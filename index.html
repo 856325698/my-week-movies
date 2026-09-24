@@ -22,11 +22,13 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;transition:.2s}
   .card:hover{border-color:var(--acc2);transform:translateY(-2px)}
   .card h3{font-size:17px;margin-bottom:4px}
+  .card h3 .ct{display:block;color:var(--sub);font-size:14px;font-weight:400;margin-top:2px}
   .card .meta{color:var(--acc2);font-size:13px;margin-bottom:10px}
   .card .en{font-size:14px;color:var(--txt)}
   .card .cn{font-size:14px;color:var(--sub);margin-top:6px}
   .site{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
   .site .name{font-weight:600;font-size:16px}
+  .site .name .ct{color:var(--sub);font-weight:400;font-size:13px}
   .site .url{color:var(--acc2);font-size:12px;word-break:break-all}
   .pill{display:inline-block;background:var(--acc);color:#fff;font-size:11px;padding:2px 8px;border-radius:20px;margin-left:6px}
   footer{text-align:center;color:var(--sub);font-size:13px;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
@@ -44,7 +46,7 @@
   <div class="grid">
     <div class="card site">
       <div>
-        <div class="name">IMDb <span class="pill">Database</span></div>
+        <div class="name">IMDb <span class="ct">互联网电影资料库</span> <span class="pill">Database</span></div>
         <div class="en">Internet Movie Database — the world's largest film info source with ratings and reviews.</div>
         <div class="cn">互联网电影资料库——全球最大的影视信息与评分影评库。</div>
       </div>
@@ -52,7 +54,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">Rotten Tomatoes <span class="pill">Scores</span></div>
+        <div class="name">Rotten Tomatoes <span class="ct">烂番茄</span> <span class="pill">Scores</span></div>
         <div class="en">Aggregates critic and audience scores into a "Fresh" percentage for quick verdicts.</div>
         <div class="cn">汇总影评人与观众评分，以"新鲜度"百分比给出快速判断。</div>
       </div>
@@ -60,7 +62,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">Letterboxd <span class="pill">Social</span></div>
+        <div class="name">Letterboxd <span class="ct">影评社交平台</span> <span class="pill">Social</span></div>
         <div class="en">A social platform for logging, rating and sharing films with cinephile communities.</div>
         <div class="cn">影迷记录、评分与分享电影的社交平台。</div>
       </div>
@@ -68,7 +70,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">Metacritic <span class="pill">Metascore</span></div>
+        <div class="name">Metacritic <span class="ct">综合评分网</span> <span class="pill">Metascore</span></div>
         <div class="en">Weights professional critic reviews into a single 0–100 Metascore.</div>
         <div class="cn">将专业影评加权为 0–100 的综合均分。</div>
       </div>
@@ -76,7 +78,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">AllMovie <span class="pill">Reference</span></div>
+        <div class="name">AllMovie <span class="ct">全电影资料库</span> <span class="pill">Reference</span></div>
         <div class="en">A deep reference library of films, cast, crew and genre biographies.</div>
         <div class="cn">涵盖影片、主创与类型传记的详实资料库。</div>
       </div>
@@ -84,7 +86,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">Trakt.tv <span class="pill">Tracking</span></div>
+        <div class="name">Trakt.tv <span class="ct">影视追踪平台</span> <span class="pill">Tracking</span></div>
         <div class="en">Tracks what you watch across services and gives personalized recommendations.</div>
         <div class="cn">跨平台记录观看历史并给出个性化推荐。</div>
       </div>
@@ -92,7 +94,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">MUBI <span class="pill">Art-house</span></div>
+        <div class="name">MUBI <span class="ct">艺术电影流媒体</span> <span class="pill">Art-house</span></div>
         <div class="en">A curated streaming service focused on international and arthouse cinema.</div>
         <div class="cn">聚焦国际与艺术电影的人工策展流媒体。</div>
       </div>
@@ -100,7 +102,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">The Criterion Channel <span class="pill">Classics</span></div>
+        <div class="name">The Criterion Channel <span class="ct">标准收藏频道</span> <span class="pill">Classics</span></div>
         <div class="en">Streams restored classics and important films from the Criterion Collection.</div>
         <div class="cn">流媒体播放标准收藏修复的经典与重要影片。</div>
       </div>
@@ -108,7 +110,7 @@
     </div>
     <div class="card site">
       <div>
-        <div class="name">Box Office Mojo <span class="pill">Box Office</span></div>
+        <div class="name">Box Office Mojo <span class="ct">票房数据库</span> <span class="pill">Box Office</span></div>
         <div class="en">Tracks worldwide box-office grosses and theatrical performance data.</div>
         <div class="cn">追踪全球票房与院线表现数据。</div>
       </div>
@@ -122,70 +124,70 @@
   <div class="grid">
 
     <div class="card">
-      <h3>Resident Evil</h3>
+      <h3>Resident Evil<span class="ct">生化危机</span></h3>
       <div class="meta">2026 · Action/Horror · RT 96% (Certified Fresh)</div>
       <div class="en">The #1 most-searched film this week and the highest-rated entry in the franchise, earning a Certified Fresh 96%.</div>
       <div class="cn">本周搜索量第一，也是该系列口碑最高的一部，烂番茄新鲜度 96%（认证新鲜）。</div>
     </div>
 
     <div class="card">
-      <h3>The Odyssey</h3>
+      <h3>The Odyssey<span class="ct">奥德赛</span></h3>
       <div class="meta">2026 · Epic · 2nd highest-grossing of the year</div>
       <div class="en">A blockbuster epic that ranks as the year's second-biggest film at the box office.</div>
       <div class="cn">史诗级大片，位列本年度票房第二。</div>
     </div>
 
     <div class="card">
-      <h3>Toy Story 5</h3>
+      <h3>Toy Story 5<span class="ct">玩具总动员5</span></h3>
       <div class="meta">2026 · Animation · Disney+ (Sep 23)</div>
       <div class="en">Pixar's return grossed $1.13B and was named one of Variety's best films of the year; its wedding finale must be seen to be believed.</div>
       <div class="cn">皮克斯回归之作，全球票房 11.3 亿美元，入选 Variety 年度佳片；婚礼高潮戏必须亲眼看。</div>
     </div>
 
     <div class="card">
-      <h3>Backrooms</h3>
+      <h3>Backrooms<span class="ct">后室</span></h3>
       <div class="meta">2026 · Horror · HBO Max (Sep 25)</div>
       <div class="en">A24's highest-grossing film ever ($394M); critics praise its effective atmospheric dread and sound design.</div>
       <div class="cn">A24 影史最卖座电影（3.94 亿美元）；影评盛赞其有效的氛围惊悚与音效设计。</div>
     </div>
 
     <div class="card">
-      <h3>Spider-Man: Brand New Day</h3>
+      <h3>Spider-Man: Brand New Day<span class="ct">蜘蛛侠：崭新的一天</span></h3>
       <div class="meta">2026 · Superhero · Highest-grossing of the year</div>
       <div class="en">The year's top box-office hit and a centerpiece of 2026's theatrical slate.</div>
       <div class="cn">本年度票房冠军，2026 年院线阵容的核心大片。</div>
     </div>
 
     <div class="card">
-      <h3>Supergirl</h3>
+      <h3>Supergirl<span class="ct">女超人</span></h3>
       <div class="meta">2026 · Superhero · HBO Max (Sep 10)</div>
       <div class="en">DC's "Woman of Tomorrow" adaptation, also released in an American Sign Language (ASL) version for accessibility.</div>
       <div class="cn">DC《明日之女》改编，并同步推出美国手语（ASL）无障碍版本。</div>
     </div>
 
     <div class="card">
-      <h3>Coyote vs. Acme</h3>
+      <h3>Coyote vs. Acme<span class="ct">威利狼大战 Acme</span></h3>
       <div class="meta">2026 · Animation/Comedy · RT 96%</div>
       <div class="en">A critically adored Looney Tunes spin-off that earned a near-perfect 96% on Rotten Tomatoes.</div>
       <div class="cn">备受好评的《乐一通》衍生喜剧，烂番茄高达 96%。</div>
     </div>
 
     <div class="card">
-      <h3>The Runner</h3>
+      <h3>The Runner<span class="ct">奔跑者</span></h3>
       <div class="meta">2026 · Thriller · Prime Video (Sep 2)</div>
       <div class="en">A real-time action thriller starring Gal Gadot as a lawyer forced to keep running to save her kidnapped son.</div>
       <div class="cn">盖尔·加朵主演的实时动作惊悚片，饰演为救被绑儿子而不断奔跑的律师。</div>
     </div>
 
     <div class="card">
-      <h3>The Love Hypothesis</h3>
+      <h3>The Love Hypothesis<span class="ct">爱情假说</span></h3>
       <div class="meta">2026 · Romance · Prime Video (Sep 23)</div>
       <div class="en">A fluffy STEM rom-com adapted from Ali Hazelwood's bestselling novel about a fake dating pact.</div>
       <div class="cn">改编自 Ali Hazelwood 畅销小说的甜宠理科浪漫喜剧，讲述假恋爱约定。</div>
     </div>
 
     <div class="card">
-      <h3>Call My Agent! The Movie</h3>
+      <h3>Call My Agent! The Movie<span class="ct">找我经纪人！电影版</span></h3>
       <div class="meta">2026 · Comedy · Netflix (Sep 10)</div>
       <div class="en">The French hit series returns as a film, with the original cast facing a chaotic first feature production.</div>
       <div class="cn">法国爆款剧集电影版回归，原班人马遭遇混乱的首部电影制作。</div>
@@ -195,7 +197,7 @@
 
   <footer>
     Generated via web search of international film sources · 2026-09-25<br>
-    数据来自对国际电影站点的联网检索 · 英文条目均附中文翻译
+    数据来自对国际电影站点的联网检索 · 英文条目与片名均附中文翻译
   </footer>
 </div>
 </body>
